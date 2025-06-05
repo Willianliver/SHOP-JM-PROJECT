@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .models import LogBusca
+from . import logic
 import requests
 
 
@@ -59,3 +60,25 @@ def buscar_produto_anymarket(request, id_produto):
             'erro': 'Erro ao fazer a requisição.',
             'detalhe': str(e)
         })
+    
+    
+def vincular_ids(request):
+    mensagem = ""
+    erro = ""
+    if request.method == 'POST':
+        sku = request.POST.get('sku')
+        id_prod_hub = request.POST.get('id_prod_hub')
+
+        # Configuração
+        token = 'MjU5MDI2OTI0Lg==.Aqjrl2pPs+LCjB3E23tkmD+uqwdiwk9lGvgOuT52ZtlghRItHsj1X6RD8lJzRVQHX0JpKWlVs7e/zHl5OES0Jg=='
+        arquivo = r'C:\Users\pires\Desktop\SHOP JM PROJECT\avi\core\planilhas\SKUxCANAL_Release_ATT.csv'
+
+        try:
+            resultado = logic.buscar_ids(sku, id_prod_hub, token)
+            bloco = logic.encontrar_bloco_vazio(arquivo)
+            mensagem = logic.atualizar_planilha(arquivo, *resultado, bloco)
+
+        except Exception as e:
+            erro = str(e)
+
+    return render(request, 'avi/form.html', {'mensagem': mensagem, 'erro': erro})
