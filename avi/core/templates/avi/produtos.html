@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Produto</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        h1 {
+            color: #444;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .status-ativo {
+            color: green;
+            font-weight: bold;
+        }
+        .status-inativo {
+            color: red;
+            font-weight: bold;
+        }
+        .imagem-produto {
+            max-width: 300px;
+            margin: 20px 0;
+        }
+        .box {
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 8px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Detalhes do Produto</h1>
+
+    {% if erro %}
+        <div style="color: red;">
+            <p>{{ erro }}</p>
+            <p>{{ detalhe }}</p>
+        </div>
+    {% else %}
+
+        {% if imagem %}
+            <img src="{{ imagem }}" alt="Imagem do Produto" class="imagem-produto">
+        {% endif %}
+
+        <div class="box">
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <td>{{ id }}</td>
+                </tr>
+                <tr>
+                    <th>SKU</th>
+                    <td>{{ sku }}</td>
+                </tr>
+                <tr>
+                    <th>EAN</th>
+                    <td>{{ ean }}</td>
+                </tr>
+                <tr>
+                    <th>Categoria</th>
+                    <td>{{ categoria }}</td>
+                </tr>
+                <tr>
+                    <th>Marca</th>
+                    <td>{{ marca }}</td>
+                </tr>
+                <tr>
+                    <th>Modelo</th>
+                    <td>{{ modelo }}</td>
+                </tr>
+                <tr>
+                    <th>Gênero</th>
+                    <td>{{ genero }}</td>
+                </tr>
+                <tr>
+                    <th>Garantia</th>
+                    <td>{{ garantia }}</td>
+                </tr>
+                <tr>
+                    <th>Peso</th>
+                    <td>{{ peso }} kg</td>
+                </tr>
+                <tr>
+                    <th>Dimensões (L x A x C)</th>
+                    <td>{{ largura }} x {{ altura }} x {{ comprimento }} cm</td>
+                </tr>
+                <tr>
+                    <th>Preço</th>
+                    <td>R$ {{ preco }}</td>
+                </tr>
+                <tr>
+                    <th>Estoque</th>
+                    <td>{{ estoque }}</td>
+                </tr>
+                <tr>
+                    <th>Status</th>
+                    <td>
+                        {% if ativo %}
+                            <span class="status-ativo">Ativo</span>
+                        {% else %}
+                            <span class="status-inativo">Inativo</span>
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="box">
+            <h2>Características:</h2>
+            {% if caracteristicas %}
+                <ul>
+                    {% for c in caracteristicas %}
+                        <li><strong>{{ c.name }}</strong>: {{ c.value }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>Sem características cadastradas.</p>
+            {% endif %}
+        </div>
+
+        <div class="box">
+            <h2>Descrição:</h2>
+            <p>{{ descricao|safe }}</p>
+        </div>
+
+    {% endif %}
+
+</body>
+</html>
