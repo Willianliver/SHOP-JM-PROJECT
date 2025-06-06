@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Vincular IDs Anymarket</title>
+    <style>
+        body { font-family: Arial; margin: 40px; }
+        .tabs { margin-bottom: 20px; }
+        .tab { display: inline-block; margin-right: 20px; padding: 10px; background: #ddd; border-radius: 5px; }
+        .active { background: #4CAF50; color: white; }
+        .form { margin-bottom: 20px; }
+        .mensagem { padding: 10px; background: #f0f0f0; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Vincular IDs - Anymarket</h1>
+
+    <div class="tabs">
+        <a href="?aba=matriz" class="tab {{ 'active' if aba == 'matriz' else '' }}">Anymarket MATRIZ</a>
+        <a href="?aba=filial" class="tab {{ 'active' if aba == 'filial' else '' }}">Anymarket FILIAL</a>
+    </div>
+
+    <form method="post" class="form">
+        {% csrf_token %}
+        <label>SKU:</label><br>
+        <input type="text" name="sku" required><br><br>
+
+        <label>ID Produto Hub:</label><br>
+        <input type="text" name="id_prod_hub" required><br><br>
+
+        <button type="submit">Vincular ID</button>
+    </form>
+
+    {% if mensagem %}
+    <div class="mensagem">{{ mensagem }}</div>
+    {% endif %}
+</body>
+</html>
