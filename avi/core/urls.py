@@ -6,6 +6,7 @@ from core import templates as templates_views
 
 
 urlpatterns = [
+    path('', views.home, name='home'),
     path('buscar-produto/<int:id_produto>/', views.buscar_produto_anymarket, name='buscar_produto', ),
     #path('vincular-ids/', views.vincular_ids, name='vincular_ids'),
     path('admin/', admin.site.urls),

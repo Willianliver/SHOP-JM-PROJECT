@@ -14,6 +14,9 @@ ARQUIVO = r'C:\Users\pires\Desktop\SHOP JM PROJECT\avi\core\planilhas\SKUxCANAL_
 TOKEN_MATRIZ = 'MjU5MDI2OTI0Lg==.Aqjrl2pPs+LCjB3E23tkmD+uqwdiwk9lGvgOuT52ZtlghRItHsj1X6RD8lJzRVQHX0JpKWlVs7e/zHl5OES0Jg=='
 TOKEN_FILIAL = '259037346L1E1706474176096C161316217609600O1'
 
+def home(request):
+    return render(request,'avi/home.html')
+
 def buscar_produto_anymarket(request, id_produto):
     url = f'https://api.anymarket.com.br/v2/products/{id_produto}'
 
