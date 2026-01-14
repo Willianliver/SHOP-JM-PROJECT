@@ -1,0 +1,19 @@
+<h2>Teste de Requisição Bling</h2>
+
+<form method="post">
+  {% csrf_token %}
+  <button type="submit">Executar requisição</button>
+</form>
+
+{% if resultado %}
+<hr>
+<p><b>URL:</b> {{ resultado.url }}</p>
+
+<p><b>Headers:</b></p>
+<pre>{{ resultado.headers }}</pre>
+
+<p><b>Status:</b> {{ resultado.status_code }}</p>
+
+<p><b>Resposta:</b></p>
+<pre>{{ resultado.response }}</pre>
+{% endif %}

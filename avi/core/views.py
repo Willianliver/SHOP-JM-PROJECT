@@ -12,7 +12,7 @@ import requests
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-
+from core.services.bling import get_product
 from .services.anymarket import consumir_skus_anymarket, atualizar_sku_anymarket
 from .utils.medidas import calcular_cubagem
 
@@ -321,3 +321,11 @@ def buscar_produto(request, id_produto):
             'erro': 'Erro ao fazer a requisição.',
             'detalhe': str(e)
         })
+    
+def teste_bling(request):
+    resultado = None
+
+    if request.method == "POST":
+        resultado = get_product()
+
+    return render(request, 'avi/bling.html', {"resultado": resultado})
