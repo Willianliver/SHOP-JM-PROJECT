@@ -12,7 +12,7 @@ import requests
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from avi.core.services.bling import get_product
+import avi.core.services.bling
 from .services.anymarket import consumir_skus_anymarket, atualizar_sku_anymarket
 from .utils.medidas import calcular_cubagem
 
@@ -323,9 +323,15 @@ def buscar_produto(request, id_produto):
         })
     
 def teste_bling(request):
-    resultado = None
+    url = "https://api.bling.com.br/Api/v3/produtos/variacoes/16590452290"
 
-    if request.method == "POST":
-        resultado = get_product()
+    payload = {}
+    headers = {
+    'Accept': 'application/json',
+    'Authorization': 'Bearer 4ed1db11d6080629d95995b83775c5a300b84093',
+    'Cookie': 'PHPSESSID=iu5dqe6h5ib3m1b6ogevt0uknf'
+    }
 
-    return render(request, 'avi/bling.html', {"resultado": resultado})
+    response = requests.request("GET", url, headers=headers, data=payload)
+
+    return render(requests.request, 'avi/bling.html', {"resultado": response})
