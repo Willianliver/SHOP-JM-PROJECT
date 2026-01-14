@@ -12,7 +12,7 @@ import requests
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from core.services.bling import get_product
+from avi.core.services.bling import get_product
 from .services.anymarket import consumir_skus_anymarket, atualizar_sku_anymarket
 from .utils.medidas import calcular_cubagem
 
