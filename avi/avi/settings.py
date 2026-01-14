@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-fuy9w^u9^(b1=ac%m$uo_pdk##uxy)13k-@%ho%t0#t##uj!_^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['shop-jm-project.onrender.com']
+ALLOWED_HOSTS = ['shop-jm-project.onrender.com', '127.0.0.1']
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'

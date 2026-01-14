@@ -13,4 +13,7 @@ urlpatterns = [
     path('matriz/', views.matriz, name='matriz'),
     path('filial/', views.filial, name='filial'),
     path('download/', views.download_planilha, name='download_planilha'),
+    path('cubagem/', views.cubagem, name='cubagem'),
+    path('cubagem/<int:id_produto>/', views.buscar_produto, name='buscar_produto')
+  
 ]

@@ -9,8 +9,15 @@ from rest_framework import status
 from .models import LogBusca
 from . import logic
 import requests
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+
+from .services.anymarket import consumir_skus_anymarket, atualizar_sku_anymarket
+from .utils.medidas import calcular_cubagem
 
 ARQUIVO_CAMINHO = r'C:\Users\pires\Desktop\SHOP JM PROJECT\avi\core\planilhas\SKUxCANAL_Release_ATT.csv'
+TOKEN_REPLETA = 'MjU5MDYzNTc1Lg==.MUfqIGh9hJCl8gZ0ji+YXHX7aX1SucmOJntr/d0/QjNRjd8WVDk1nXie3s2dX4yf99em09OD7rCS1OYo8Ek+Mw=='
 TOKEN_MATRIZ = 'MjU5MDI2OTI0Lg==.Aqjrl2pPs+LCjB3E23tkmD+uqwdiwk9lGvgOuT52ZtlghRItHsj1X6RD8lJzRVQHX0JpKWlVs7e/zHl5OES0Jg=='
 TOKEN_FILIAL = 'MjU5MDQ3MzU2Lg==.ANGIbLEHFMmZlfjZZY80eE+J9sf38bUsHEEVDEFV+GTo0ElgRgiK7hlMXu0n6SjiGY+J7RjJvXu9PagjZNNrnQ=='
 
@@ -22,7 +29,7 @@ def buscar_produto_anymarket(request, id_produto):
 
     headers = {
         'Content-Type': 'application/json',
-        'gumgaToken': 'MjU5MDI2OTI0Lg==.Aqjrl2pPs+LCjB3E23tkmD+uqwdiwk9lGvgOuT52ZtlghRItHsj1X6RD8lJzRVQHX0JpKWlVs7e/zHl5OES0Jg=='
+        'gumgaToken': "MjU5MDYzNTc1Lg==.MUfqIGh9hJCl8gZ0ji+YXHX7aX1SucmOJntr/d0/QjNRjd8WVDk1nXie3s2dX4yf99em09OD7rCS1OYo8Ek+Mw=="
     }
 
     try:
@@ -256,3 +263,61 @@ def download_planilha(request):
         return FileResponse(open(filepath, 'rb'), as_attachment=True, filename='SKUxCANAL_Release_ATT.csv')
     except FileNotFoundError:
         return render(request, 'form.html', {'mensagem': '❌ Arquivo não encontrado.', 'aba': 'matriz'})
+    
+#Calcular cubagem
+
+def cubagem(request):
+    return render(request,'avi/cubagem.html')
+
+def buscar_produto(request, id_produto):
+    url = f'https://api.anymarket.com.br/v2/products/{id_produto}'
+
+    headers = {
+        'Content-Type': 'application/json',
+        'gumgaToken': "MjU5MDYzNTc1Lg==.MUfqIGh9hJCl8gZ0ji+YXHX7aX1SucmOJntr/d0/QjNRjd8WVDk1nXie3s2dX4yf99em09OD7rCS1OYo8Ek+Mw=="
+    }
+
+    try:
+        response = requests.get(url, headers=headers)
+        
+        if response.status_code == 200:
+            data = response.json()
+
+            # Pega a primeira SKU e imagem como principais
+            sku_data = data.get('skus', [{}])[0]
+            imagem_principal = next((img.get('url') for img in data.get('images', []) if img.get('main')), None)
+
+            contexto = {
+                'id': data.get('id'),
+                'titulo': data.get('title'),
+                'descricao': data.get('description'),
+                'categoria': data.get('category', {}).get('name'),
+                'marca': data.get('brand', {}).get('name'),
+                'modelo': data.get('model'),
+                'genero': data.get('gender'),
+                'garantia': data.get('warrantyText'),
+                'peso': data.get('weight'),
+                'largura': data.get('width'),
+                'altura': data.get('height'),
+                'comprimento': data.get('length'),
+                'sku': sku_data.get('partnerId'),
+                'ean': sku_data.get('ean'),
+                'preco': sku_data.get('sellPrice'),
+                'estoque': sku_data.get('amount'),
+                'imagem': imagem_principal,
+                'caracteristicas': data.get('characteristics', []),
+                'ativo': data.get('isProductActive'),
+            }
+
+            return render(request, 'avi/produtos.html',  contexto)
+
+        return render(request, 'avi/produtos.html', {
+            'erro': f'Erro na requisição. Status {response.status_code}',
+            'detalhe': response.text
+        })
+
+    except Exception as e:
+        return render(request, 'avi/produtos.html', {
+            'erro': 'Erro ao fazer a requisição.',
+            'detalhe': str(e)
+        })

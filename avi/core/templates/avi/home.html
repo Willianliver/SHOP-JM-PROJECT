@@ -17,10 +17,36 @@
             <h1 class="mb-4">Bem-vindo ao Sistema de Integração AnyMarket 2.0</h1>
             <p class="lead">Escolha uma das opções abaixo para começar:</p>
 
+                <!-- Código novo -->
+
+                <div class="row">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                        <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Calculo automático de cubagem</h5>
+                            <p class="card-text">Calculo de cubagem apartir de um SKU</p>
+                            <a href="{% url 'cubagem' %}" class="btn btn-primary">Calcular cubagem</a>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Special title treatment</h5>
+                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Fim do código novo -->
+
+             <!-- Links (Inativo por enquanto)  
             <div class="d-grid gap-3 col-6 mx-auto">
                 <a href="{% url 'matriz' %}" class="btn btn-primary btn-lg">AnyMarket Matriz / Filial</a>
                 <a href="{% url 'download_planilha' %}" class="btn btn-success btn-lg">Baixar Planilha</a>
             </div>
+            -->  
         </div>
     </div>
 
